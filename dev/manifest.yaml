@@ -1,1 +1,75 @@
-
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app: demo
+    environment: dev
+    name: demo
+  name: demo
+---
+apiVersion: v1
+data:
+  ENVIRONMENT: dev
+kind: ConfigMap
+metadata:
+  labels:
+    app: demo
+    environment: dev
+  name: demo-config
+  namespace: demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: demo
+    environment: dev
+  name: demo
+  namespace: demo
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: demo
+    environment: dev
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: demo
+    environment: dev
+  name: demo
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: demo
+        environment: dev
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: demo-config
+          image: asia-east1-docker.pkg.dev/extended-spark-406211/k8s/demo:5c79f711c9c5101d18ec23956dd89816d82e43626976ba48b5da8efd4a32b7cd@sha256:7f727dd27b6355c554dfdb9e50007de92689bff5ebc1578952a64495b0de69f1
+          name: demo
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: 250m
+              ephemeral-storage: 50Mi
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              ephemeral-storage: 50Mi
+              memory: 512Mi
