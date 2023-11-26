@@ -61,7 +61,7 @@ spec:
         - envFrom:
             - configMapRef:
                 name: dev-demo-config
-          image: asia-east1-docker.pkg.dev/extended-spark-406211/k8s/demo:5c79f711c9c5101d18ec23956dd89816d82e43626976ba48b5da8efd4a32b7cd@sha256:e924e03c5d7f6a9f4158ddb26159b43a2b0b19a0f5cdf7b7f2ea181040efa931
+          image: asia-east1-docker.pkg.dev/extended-spark-406211/k8s/demo:5c79f711c9c5101d18ec23956dd89816d82e43626976ba48b5da8efd4a32b7cd@sha256:e444d806c51c25e5422033aef6443ede5ba9ad863d0332957e6dad7812194c6b
           name: demo
           ports:
             - containerPort: 3000
