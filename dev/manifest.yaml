@@ -15,7 +15,7 @@ metadata:
   labels:
     app: demo
     environment: dev
-  name: demo-config
+  name: dev-demo-config
   namespace: demo
 ---
 apiVersion: v1
@@ -24,17 +24,18 @@ metadata:
   labels:
     app: demo
     environment: dev
-  name: demo
+  name: dev-demo-loadbalancer-svc
   namespace: demo
 spec:
   ports:
     - name: http
       port: 80
+      protocol: TCP
       targetPort: 3000
   selector:
     app: demo
     environment: dev
-  type: ClusterIP
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -42,7 +43,7 @@ metadata:
   labels:
     app: demo
     environment: dev
-  name: demo
+  name: dev-demo
   namespace: demo
 spec:
   replicas: 1
@@ -59,8 +60,8 @@ spec:
       containers:
         - envFrom:
             - configMapRef:
-                name: demo-config
-          image: asia-east1-docker.pkg.dev/extended-spark-406211/k8s/demo:5c79f711c9c5101d18ec23956dd89816d82e43626976ba48b5da8efd4a32b7cd@sha256:7f727dd27b6355c554dfdb9e50007de92689bff5ebc1578952a64495b0de69f1
+                name: dev-demo-config
+          image: asia-east1-docker.pkg.dev/extended-spark-406211/k8s/demo:5c79f711c9c5101d18ec23956dd89816d82e43626976ba48b5da8efd4a32b7cd@sha256:e924e03c5d7f6a9f4158ddb26159b43a2b0b19a0f5cdf7b7f2ea181040efa931
           name: demo
           ports:
             - containerPort: 3000
